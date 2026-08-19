@@ -86,7 +86,4 @@ no code change needed.
   cylindrical Earth-shadow model — accurate to within about a minute of the
   true terminator crossing, the same approximation most simple trackers use.
 
-## Not built
 
-- Time travel (see satellite positions at an arbitrary past/future time) —
-  intentionally dropped from the original plan.
