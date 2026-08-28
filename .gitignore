@@ -11,3 +11,8 @@ obj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Cloudflare Worker deploy tooling (backend/cloudflare/)
+node_modules/
+.wrangler/
+.dev.vars

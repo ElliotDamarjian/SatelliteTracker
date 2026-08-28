@@ -1,0 +1,16 @@
+name = "satellite-tracker-api"
+main = "src/worker.ts"
+compatibility_date = "2026-08-28"
+
+[[containers]]
+max_instances = 1
+class_name = "SatelliteTrackerContainer"
+image = "../SatelliteTracker.Api/Dockerfile"
+
+[[durable_objects.bindings]]
+name = "SATELLITE_TRACKER_CONTAINER"
+class_name = "SatelliteTrackerContainer"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["SatelliteTrackerContainer"]

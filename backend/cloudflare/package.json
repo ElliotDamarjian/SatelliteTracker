@@ -1,0 +1,17 @@
+{
+  "name": "satellite-tracker-cloudflare",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@cloudflare/containers": "latest"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "latest",
+    "wrangler": "latest",
+    "typescript": "latest"
+  }
+}

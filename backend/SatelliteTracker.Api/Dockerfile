@@ -1,9 +1,12 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
-COPY SatelliteTracker.Api.csproj ./
-RUN dotnet restore
 COPY . .
-RUN dotnet publish -c Release -o /app --no-restore
+# A single publish (implicit restore) rather than a separate restore layer +
+# --no-restore publish — the split version failed here with a NuGet fallback
+# folder path baked into the cached restore pointing at a Windows-only path
+# that doesn't exist in the Linux build container. Costs a bit of layer-cache
+# efficiency on rebuilds; not worth the fragility for a small single-project app.
+RUN dotnet publish -c Release -o /app
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
