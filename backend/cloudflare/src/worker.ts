@@ -8,8 +8,7 @@ export class SatelliteTrackerContainer extends Container {
   sleepAfter = "10m";
   envVars = {
     PORT: "8080",
-    // Update this once the frontend is deployed — CORS rejects it until then.
-    FrontendOrigins: "http://localhost:3100",
+    FrontendOrigins: "https://satellite-tracker-frontend.elliotdamarjian.workers.dev,http://localhost:3100",
   };
 }
 
