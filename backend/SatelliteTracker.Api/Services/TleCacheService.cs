@@ -68,22 +68,27 @@ public class TleCacheService
         await _refreshLock.WaitAsync(ct);
         try
         {
-            foreach (var category in staleCategories.Where(IsStale))
-            {
-                _lastAttemptByCategory[category] = DateTime.UtcNow;
-                try
-                {
-                    _cacheByCategory[category] = await FetchGroupAsync(category, Groups[category], ct);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogWarning(ex, "Failed to refresh TLE group {Category}; keeping previous data if any", category);
-                }
-            }
+            // In parallel, not sequential — otherwise one slow/unresponsive
+            // category delays every other category behind it in line.
+            var refreshTasks = staleCategories.Where(IsStale).Select(category => RefreshOneAsync(category, ct));
+            await Task.WhenAll(refreshTasks);
         }
         finally
         {
             _refreshLock.Release();
+        }
+    }
+
+    private async Task RefreshOneAsync(string category, CancellationToken ct)
+    {
+        _lastAttemptByCategory[category] = DateTime.UtcNow;
+        try
+        {
+            _cacheByCategory[category] = await FetchGroupAsync(category, Groups[category], ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Failed to refresh TLE group {Category}; keeping previous data if any", category);
         }
     }
 

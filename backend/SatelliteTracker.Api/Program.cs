@@ -13,7 +13,13 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton(_ =>
 {
-    var client = new HttpClient();
+    var client = new HttpClient
+    {
+        // Default is 100s; a stalled/blocked route to CelesTrak (silently
+        // dropped packets, not a fast reject) would otherwise hang each
+        // category fetch for the full 100s before failing over.
+        Timeout = TimeSpan.FromSeconds(15),
+    };
     // CelesTrak's usage policy asks clients to identify themselves; requests with no
     // User-Agent (the .NET HttpClient default) get 403'd on their larger data groups.
     client.DefaultRequestHeaders.UserAgent.ParseAdd("SatelliteTracker/1.0 (personal hobby project)");
