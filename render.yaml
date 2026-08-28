@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: satellite-tracker-api
+    runtime: docker
+    dockerfilePath: ./backend/SatelliteTracker.Api/Dockerfile
+    dockerContext: ./backend/SatelliteTracker.Api
+    plan: free
+    envVars:
+      # Update this after the frontend is deployed — CORS will reject the
+      # live site until this matches its real URL.
+      - key: FrontendOrigins
+        value: http://localhost:3100
